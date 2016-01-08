@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace SnakServer.Db
 {
-    [Table("player")]
-    public class Player
+    [Table("score")]
+    public class Score
     {
         public int id { get; set; }
-        public string name { get; set; }
+        public int player_id { get; set; }
+        public int level_id { get; set; }
+        public int score { get; set; }
     }
 }

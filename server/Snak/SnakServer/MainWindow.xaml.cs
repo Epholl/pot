@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using SnakServer.Db;
 
 namespace SnakServer
 {
@@ -23,24 +24,26 @@ namespace SnakServer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ServerService networkClient;
 
         public MainWindow()
         {
             InitializeComponent();
-            networkClient = new ServerService();
-            networkClient.StartService();
+
+            ((ServerService) SL.Get(typeof(ServerService))).StartService();
+            SL.Register(this);
         }
 
         private void createInstanceButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            //runningInstancesLabel.Content = databaseClient.GetDbContext().Players.Select(p => p).ToList().First().name;
+            var databaseClient = (DatabaseService) SL.Get(typeof(DatabaseService));
+            var result = databaseClient.GetAllLevelsWithHighScores();
+            runningInstancesLabel.Content = result.Count + ", " + result.First().PlayerName + ": " + result.First().Score + ", " + result.First().LevelName;
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // close db and wcf connections
-            networkClient.StopService();
+            ((ServerService) SL.Get(typeof(ServerService))).StopService();
         }
     }
 }

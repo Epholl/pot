@@ -1,40 +1,36 @@
-﻿using System;
+﻿using SnakServer.Db.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Common;
-using System.Data.Entity.Infrastructure;
-using System.Data.SQLite;
-using System.Data.Entity;
-using System.Reflection;
-using System.Data.Entity.Core.Common;
-using System.Data.SQLite.EF6;
 
 namespace SnakServer.Service
 {
     class DatabaseService
     {
-    }
+        private SnakDbContext dbContext;
 
-    public class SQLiteConnectionFactory : IDbConnectionFactory
-    {
-        public DbConnection CreateConnection(string nameOrConnectionString)
+        public DatabaseService()
         {
-            return new SQLiteConnection(nameOrConnectionString);
+            string executable = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            string path = (System.IO.Path.GetDirectoryName(executable));
+            AppDomain.CurrentDomain.SetData("DataDirectory", path);
+            dbContext = new SnakDbContext();
         }
-    }
 
-    public class SQLiteConfiguration : DbConfiguration
-    {
-        public SQLiteConfiguration()
+        public SnakDbContext GetDbContext()
         {
-            SetDefaultConnectionFactory(new SQLiteConnectionFactory());
-            SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
-            SetProviderFactory("System.Data.SQLite.EF6", SQLiteProviderFactory.Instance);
-            Type t = Type.GetType("System.Data.SQLite.EF6.SQLiteProviderServices, System.Data.SQLite.EF6");
-            FieldInfo fi = t.GetField("Instance", BindingFlags.NonPublic | BindingFlags.Static);
-            SetProviderServices("System.Data.SQLite", (DbProviderServices)fi.GetValue(null));
+            return dbContext;
+        }
+
+        public List<Highscore> GetAllLevelsWithHighScores()
+        {
+            var query = from level in dbContext.Levels
+                             join score in dbContext.Scores on level.id equals score.level_id
+                             join player in dbContext.Players on score.player_id equals player.id
+                             select new Highscore { LevelName = level.name, Score = score.score, PlayerName = player.name };
+            return query.ToList();
         }
     }
 }

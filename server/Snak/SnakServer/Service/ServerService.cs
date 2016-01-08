@@ -14,34 +14,24 @@ namespace SnakServer.Service
 
         public ServerService()
         {
-
+            Uri baseAddress = new Uri("http://localhost:8000/Snak/");
+            serviceHost = new ServiceHost(typeof(ServerService), baseAddress);
+            SL.Register(this);
         }
 
         public void StartService()
         {
-            // Step 1 Create a URI to serve as the base address.
-            Uri baseAddress = new Uri("http://localhost:8000/Snak/");
-
-            // Step 2 Create a ServiceHost instance
-            serviceHost = new ServiceHost(typeof(ServerService), baseAddress);
-
             try
             {
-                // Step 3 Add a service endpoint.
                 serviceHost.AddServiceEndpoint(typeof(IServerService), new WSHttpBinding(), "ServerService");
-
-                // Step 4 Enable metadata exchange.
                 ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
                 smb.HttpGetEnabled = true;
                 serviceHost.Description.Behaviors.Add(smb);
-
-                // Step 5 Start the service.
+                
                 serviceHost.Open();
-                Console.WriteLine("The service is ready.");
             }
             catch (CommunicationException ce)
             {
-                Console.WriteLine("An exception occurred: {0}", ce.Message);
                 serviceHost.Abort();
             }
         }
@@ -56,6 +46,8 @@ namespace SnakServer.Service
 
         public int GetSampleData(int input)
         {
+            MainWindow mainWindow = (MainWindow)SL.Get(typeof(MainWindow));
+            mainWindow.runningInstancesLabel.Content = "WCF called: " + input;
             return input +1;
         }
     }
