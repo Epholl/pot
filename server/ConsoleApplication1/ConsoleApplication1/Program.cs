@@ -14,13 +14,8 @@ namespace ConsoleApplication1
             try
             {
                 ServerServiceClient client = new ServerServiceClient();
-                int i = 1;
-                string input = "";
-                while (input == "")
-                {
-                    Console.WriteLine("Okay, here we go with " + i + ": " + client.GetSampleData(i++));
-                    input = Console.ReadLine();
-                }
+                var result = client.getHighscoresForLevel("test1");
+                Console.WriteLine(result.scores.Count());
                 client.Close();
             }
             catch (Exception e)
