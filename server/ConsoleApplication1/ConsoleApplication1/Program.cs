@@ -11,15 +11,24 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            ServerServiceClient client = new ServerServiceClient();
-            int i = 1;
-            string input = "";
-            while (input == "")
+            try
             {
-                Console.WriteLine("Okay, here we go with " + i + ": " + client.GetSampleData(i++));
-                input = Console.ReadLine();
+                ServerServiceClient client = new ServerServiceClient();
+                int i = 1;
+                string input = "";
+                while (input == "")
+                {
+                    Console.WriteLine("Okay, here we go with " + i + ": " + client.GetSampleData(i++));
+                    input = Console.ReadLine();
+                }
+                client.Close();
             }
-            client.Close();
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception thrown: " + e.ToString());
+            }
+            Console.WriteLine("Press Enter key to exit");
+            Console.ReadLine();
         }
     }
 }

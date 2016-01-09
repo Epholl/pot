@@ -60,6 +60,7 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.99.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,6 +84,7 @@
     <Compile Include="Db\Player.cs" />
     <Compile Include="Db\Score.cs" />
     <Compile Include="Db\Util\Highscore.cs" />
+    <Compile Include="Service\WcfEntities\Highscores.cs" />
     <Compile Include="SL.cs" />
     <Compile Include="Service\DatabaseService.cs" />
     <Compile Include="Service\DatabaseUtils.cs" />

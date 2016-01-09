@@ -14,5 +14,14 @@ namespace SnakServer.Service
 
         [OperationContract]
         int GetSampleData(int input);
+
+        [OperationContract]
+        void SaveHighscore(String playerName, String levelName, int score);
+
+        [OperationContract]
+        WcfEntities.Highscores getHighscoresForLevel(String levelName);
+
+        [OperationContract]
+        WcfEntities.Highscores getHighscoresForPlayer(String playerName);
     }
 }

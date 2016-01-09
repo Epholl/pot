@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using SnakServer.Db;
+using SnakServer.Db.Util;
 
 namespace SnakServer
 {
@@ -31,19 +32,32 @@ namespace SnakServer
 
             ((ServerService) SL.Get(typeof(ServerService))).StartService();
             SL.Register(this);
+            var db = (DatabaseService)SL.Get(typeof(DatabaseService));
+            dataGrid.ItemsSource = db.GetAllLevelsWithScores();
         }
 
-        private void createInstanceButton_Click(object sender, RoutedEventArgs e)
+        private void ClearHighscores_Click(object sender, RoutedEventArgs e)
         {
-            //runningInstancesLabel.Content = databaseClient.GetDbContext().Players.Select(p => p).ToList().First().name;
-            var databaseClient = (DatabaseService) SL.Get(typeof(DatabaseService));
-            var result = databaseClient.GetAllLevelsWithHighScores();
-            runningInstancesLabel.Content = result.Count + ", " + result.First().PlayerName + ": " + result.First().Score + ", " + result.First().LevelName;
+            var db = (DatabaseService)SL.Get(typeof(DatabaseService));
+            db.ClearHighScores();
+            dataGrid.ItemsSource = null;
+        }
+
+        private void ShowAllScoresButton_Click(object sender, RoutedEventArgs e)
+        {
+            var db = (DatabaseService)SL.Get(typeof(DatabaseService));
+            dataGrid.ItemsSource = db.GetAllLevelsWithScores();
+        }
+
+        private void ShowLevelHighscoresButton_Click(object sender, RoutedEventArgs e)
+        {
+            var db = (DatabaseService)SL.Get(typeof(DatabaseService));
+            dataGrid.ItemsSource = db.GetAllLevelsWithHighscores();
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ((ServerService) SL.Get(typeof(ServerService))).StopService();
+            ((ServerService)SL.Get(typeof(ServerService))).StopService();
         }
     }
 }

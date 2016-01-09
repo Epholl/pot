@@ -8,9 +8,11 @@
         Title="MainWindow" Height="350" Width="525"
         Closing="WindowClosing">
     <Grid>
-        <ListBox x:Name="runningInstancesListBox" HorizontalAlignment="Left" Height="180" Margin="10,41,0,0" VerticalAlignment="Top" Width="141"/>
-        <Label x:Name="runningInstancesLabel" Content="Running instances:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="createInstanceButton" Content="Create new" HorizontalAlignment="Left" Margin="10,291,0,0" VerticalAlignment="Top" Width="141" Click="createInstanceButton_Click"/>
+        <Label x:Name="instancesListLabel" Content="List of highscores:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="498"/>
+        <Button x:Name="ClearHighscores" Content="Clear Highscores" HorizontalAlignment="Left" Margin="10,273,0,0" VerticalAlignment="Top" Width="141" Click="ClearHighscores_Click"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="227" Width="498"/>
+        <Button x:Name="showAllScoresButton" Content="Show all scores" HorizontalAlignment="Left" Margin="156,273,0,0" VerticalAlignment="Top" Width="141" Click="ShowAllScoresButton_Click"/>
+        <Button x:Name="showLevelHighscoresButton" Content="Show level highscores" HorizontalAlignment="Left" Margin="302,273,0,0" VerticalAlignment="Top" Width="141" Click="ShowLevelHighscoresButton_Click"/>
 
     </Grid>
 </Window>
